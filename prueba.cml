@@ -1,0 +1,52 @@
+BoundedContext ProductCatalogManagementContext implements ProductCatalogDomain
+BoundedContext CustomerManagementContext implements CustomerDomain
+BoundedContext OrderManagementContext implements OrderDomain
+BoundedContext InventoryManagementContext implements InventoryDomain
+BoundedContext PaymentManagementContext implements PaymentDomain
+BoundedContext ShippingManagementContext implements ShippingDomain
+BoundedContext SecurityManagementContext implements SecurityDomain
+ContextMap Prueba {
+    type SYSTEM_LANDSCAPE
+    state TO_BE
+
+    /*Agregar los  BoundedContext al mapa de contexto*/
+    contains ProductCatalogManagementContext, CustomerManagementContext, OrderManagementContext, InventoryManagementContext, PaymentManagementContext, ShippingManagementContext, SecurityManagementContext
+
+    /* Define las ralaciones */
+    
+    ProductCatalogManagementContext Partnership OrderManagementContext
+
+    ProductCatalogManagementContext Customer-Supplier CustomerManagementContext
+    ProductCatalogManagementContext Shared-Kernel InventoryManagementContext
+    CustomerManagementContext [D,ACL]<- [U,OHS,PL] SecurityManagementContext
+    OrderManagementContext Customer-Supplier PaymentManagementContext
+    OrderManagementContext Customer-Supplier ShippingManagementContext
+    SecurityManagementContext [U,OHS]-> [D,ACL,ACL] CustomerManagementContext
+    InventoryManagementContext [D,CF]<- [U,OHS,PL] ShippingManagementContext
+}
+
+Domain Prueba{
+    Subdomain ProductCatalogDomain {
+        type = CORE_DOMAIN 
+        domainVisionStatement = "Gestion del catalogo de producto"
+    }
+    Subdomain CustomerDomain {
+        type = SUPPORTING_DOMAIN
+    }
+    Subdomain OrderDomain {
+        type = SUPPORTING_DOMAIN
+    }
+    Subdomain InventoryDomain {
+        type = GENERIC_SUBDOMAIN
+    }
+
+    Subdomain PaymentDomain {
+        type = GENERIC_SUBDOMAIN
+    }
+    Subdomain ShippingDomain {
+        type = SUPPORTING_DOMAIN
+    }
+    Subdomain SecurityDomain {
+        type = GENERIC_SUBDOMAIN
+    }
+}
