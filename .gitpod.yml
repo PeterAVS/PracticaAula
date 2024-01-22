@@ -1,4 +1,4 @@
-Image:
+image:
   file: .gitpod.Dockerfile
 
 vscode:
